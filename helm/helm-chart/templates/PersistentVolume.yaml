@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: {{ .Values.csi.driverName }}
+  name: {{ .Values.csi.pvName }}
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ .Values.csi.storageClassName }}
+  csi:
+    driver: {{ .Values.csi.driverName }}
+    volumeHandle: {{ printf "%s#%s#%s" .Values.csi.azureResourceGroupName .Values.csi.azureStorageAccountName .Values.csi.azureBlobName }}
+    volumeAttributes:
+      resourceGroup: {{ required "You must specify resourceGroup" .Values.csi.azureResourceGroupName }}
+      storageAccount: {{ .Values.csi.azureStorageAccountName }}
+      containerName: {{ .Values.csi.azureBlobContainerName }}
+      protocol: fuse
+      AzureStorageAuthType: MSI
+      AzureStorageIdentityClientID: {{ .Values.csi.azureStorageIdentityClientID }}
+    #nodeStageSecretRef:
+    #  namespace: {{ .Values.namespace }}
+

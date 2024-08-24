@@ -1,0 +1,8 @@
+apiVersion: v2
+name: azureblob-csi-test
+description: A Helm chart for azureblob csi driver inspection
+version: 1.0.0
+appVersion: 1.0.0
+maintainers:
+  - name: Shogo Shimahara
+    email: shogo811dq@gmail.com
